@@ -55,8 +55,8 @@ export function MainPage() {
         <div className="main-page-container">
             {data && <div className='graph'>
                 <Plot
-                    data={data.plot[0].fig.data}
-                    layout={data.plot[0].fig.layout}
+                    data={data.data}
+                    layout={data.layout}
                 />
             </div>}
             <div>
