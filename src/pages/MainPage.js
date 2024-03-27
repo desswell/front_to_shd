@@ -11,10 +11,10 @@ import {DotLoader} from "react-spinners";
 export function MainPage() {
     const [loader, setLoader] = useState(false)
     const [sigh, setSigh] = useState('time')
-    const [param, setParam] = useState(['System'])
+    const [param, setParam] = useState([{key: 'System', cat: 'Array'}])
     const [sighParam, setSighParam] = useState('Capacity usage(%)')
     const [window, setWindow] = useState('auto_interval')
-    const [level, setLevel] = useState(['level0'])
+    const [level, setLevel] = useState([{key: 'level0', cat: 'Уровень 1'}])
     const [storagePool, setStoragePool] = useState(false)
     const [global, setGlobal] = useState(false)
     const [cloud, setCloud] = useState(false)
