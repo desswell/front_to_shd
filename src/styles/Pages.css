@@ -17,6 +17,9 @@
     display: grid;
     margin-bottom: 20px;
 }
+.input-div > span {
+    margin-left: 35%
+}
 
 .checkbox {
     display: flex;
