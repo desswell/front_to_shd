@@ -63,8 +63,8 @@ export function MainPage() {
                 <div className="input-div">
                     <SelectMulti options={[
                         {key: 'System', cat: 'Array'},
-                        {key: 'StoragePool1', cat: 'StoragePool1'},
-                        {key: 'StoragePool2', cat: 'StoragePool2'},
+                        {key: 'StoragePool001', cat: 'StoragePool1'},
+                        {key: 'StoragePool002', cat: 'StoragePool2'},
                     ]} handleChange={handleChangeParam} title='Параметры' state={[{key: 'System', cat: 'Array'}]}/>
                 </div>
                 <div className="input-div">
@@ -96,10 +96,10 @@ export function MainPage() {
                 }
                 <div className="input-div">
                     <SelectMulti options={[
-                        {key: 'level0', cat: 'Уровень 1'},
-                        {key: 'level1', cat: 'Уровень 2'},
-                        {key: 'level2', cat: 'Уровень 3'},
-                    ]} handleChange={handleChangeLevel} title='Предсказание для' state={[{key: 'level0', cat: 'Уровень 1'}]}/>
+                        {key: 'LEVEL0', cat: 'Уровень 1'},
+                        {key: 'LEVEL1', cat: 'Уровень 2'},
+                        {key: 'LEVEL2', cat: 'Уровень 3'},
+                    ]} handleChange={handleChangeLevel} title='Предсказание для' state={[{key: 'LEVEL0', cat: 'Уровень 1'}]}/>
                 </div>
                 <div className="input-div">
                     <Checkbox title='Использовать для прогноза StoragePool' type='checkbox'
