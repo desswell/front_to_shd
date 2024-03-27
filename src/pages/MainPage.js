@@ -44,7 +44,9 @@ export function MainPage() {
             levels_list: level,
             use_cloud: cloud
         }).then((response) => {
-            setData(response.data)
+            let plot = JSON.parse(response.data.plot[0].fig)
+            plot.layout.xaxis.type = 'date'
+            setData(plot)
             setLoader(false)
         }).catch((error) => console.log(error))
     }
