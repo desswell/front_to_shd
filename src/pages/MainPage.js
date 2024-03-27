@@ -20,21 +20,7 @@ export function MainPage() {
     const [cloud, setCloud] = useState(false)
     const [interval, setInterval] = useState('Месяц')
     const [intervalNum, setIntervalNum] = useState(1)
-    const [data, setData] = useState([
-        {
-            x: [1, 2, 3, 4],
-            y: [10, 15, 13, 17],
-            type: 'scatter',
-            mode: 'lines+markers',
-            marker: { color: 'blue' },
-        },
-        {
-            x: [1, 2, 3, 4],
-            y: [16, 5, 11, 9],
-            type: 'bar',
-            name: 'Bar Chart',
-        },
-    ])
+    const [data, setData] = useState()
     const handleChangeParam = (selected) => {
         setParam(selected);
     };
@@ -65,12 +51,12 @@ export function MainPage() {
 
     return(
         <div className="main-page-container">
-            <div className='graph'>
-            <Plot
-                data={data}
-                layout={{ width: 600, height: '100%', title: 'График Plotly' }}
-            />
-            </div>
+            {data && <div className='graph'>
+                <Plot
+                    data={data.plot[0].fig.data}
+                    layout={data.plot[0].fig.layout}
+                />
+            </div>}
             <div>
                 <div className="input-div">
                     <SelectMulti options={[
