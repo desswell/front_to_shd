@@ -9,6 +9,7 @@ import axios from 'axios';
 import {DotLoader} from "react-spinners";
 import {ReactComponent as ReactLogo} from '../svgs/BAUM_AI_P-05.svg'
 
+
 export function MainPage() {
     const [loader, setLoader] = useState(false)
     const [sigh, setSigh] = useState('time')
@@ -31,7 +32,7 @@ export function MainPage() {
 
     const handleClick = async () => {
         setLoader(true)
-        await axios.post('', {
+        await axios.post('http://127.0.0.1:5000/api/get_graph', {
             param: param,
             sigh: sigh,
             target: sighParam,
@@ -51,10 +52,12 @@ export function MainPage() {
             setLoader(false)
         }).catch((error) => console.log(error))
     }
-
+    console.log("data.layout", data?.layout)
+    console.log("data.layout.typeof", typeof data?.layout)
     return(
         <div>
             <ReactLogo style={{ width: '200px', height: 'auto', marginLeft: '30px'}}/>
+
             <div className="main-page-container">
                 {data && <div className='graph'>
                     <Plot
