@@ -102,9 +102,9 @@ export function MainPage() {
                     }
                     <div className="input-div">
                         <SelectMulti options={[
-                            {key: 'LEVEL0', cat: 'Уровень 1'},
-                            {key: 'LEVEL1', cat: 'Уровень 2'},
-                            {key: 'LEVEL2', cat: 'Уровень 3'},
+                            {key: 'LEVEL0', cat: 'Уровень 0'},
+                            {key: 'LEVEL1', cat: 'Уровень 1'},
+                            {key: 'LEVEL2', cat: 'Уровень 2'},
                         ]} handleChange={handleChangeLevel} title='Предсказание для' state={[{key: 'LEVEL0', cat: 'Уровень 1'}]}/>
                     </div>
                     <div className="input-div">
