@@ -29,6 +29,15 @@ export function MainPage() {
     const handleChangeLevel = (selected) => {
         setLevel(selected);
     };
+    const handleChangeStoragePool= () => {
+        setStoragePool(prevState => !prevState); // Передаем функцию в setState, которая получает предыдущее состояние и возвращает новое
+    };
+    const handleChangeCloud= () => {
+        setCloud(prevState => !prevState); // Передаем функцию в setState, которая получает предыдущее состояние и возвращает новое
+    };
+    const handleChangeGlobal= () => {
+        setGlobal(prevState => !prevState); // Передаем функцию в setState, которая получает предыдущее состояние и возвращает новое
+    };
 
     const handleClick = async () => {
         setLoader(true)
@@ -109,15 +118,15 @@ export function MainPage() {
                     </div>
                     <div className="input-div">
                         <Checkbox title='Использовать для прогноза StoragePool' type='checkbox'
-                                  value={storagePool} onChange={setStoragePool(!storagePool)}/>
+                                  value={storagePool} onChange={handleChangeStoragePool}/>
                     </div>
                     {window==='auto_interval' && <div className="input-div">
                         <Checkbox title='find_global' type='checkbox'
-                                  value={global} onChange={setGlobal(!global)}/>
+                                  value={global} onChange={handleChangeGlobal}/>
                     </div>}
                     <div className="input-div">
                         <Checkbox title='Облако точек' type='checkbox'
-                                  value={cloud} onChange={setCloud(!cloud)}/>
+                                  value={cloud} onChange={handleChangeCloud}/>
                     </div>
                     <div className="input-div">
                         {!loader && <Button children='Визуализировать' onClick={handleClick}/>}
