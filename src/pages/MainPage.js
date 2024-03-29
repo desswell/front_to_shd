@@ -16,7 +16,7 @@ export function MainPage() {
     const [param, setParam] = useState([{key: 'System', cat: 'Array'}])
     const [sighParam, setSighParam] = useState('Capacity usage(%)')
     const [window, setWindow] = useState('auto_interval')
-    const [level, setLevel] = useState([{key: 'level0', cat: 'Уровень 1'}])
+    const [level, setLevel] = useState([{key: 'LEVEL0', cat: 'Уровень 0'}])
     const [storagePool, setStoragePool] = useState(false)
     const [global, setGlobal] = useState(false)
     const [cloud, setCloud] = useState(false)
@@ -32,7 +32,7 @@ export function MainPage() {
 
     const handleClick = async () => {
         setLoader(true)
-        await axios.post('http://127.0.0.1:5000/api/get_graph', {
+        await axios.post('http://localhost:8001/api/get_graph', {
             param: param,
             sigh: sigh,
             target: sighParam,
@@ -56,7 +56,7 @@ export function MainPage() {
     console.log("data.layout.typeof", typeof data?.layout)
     return(
         <div>
-            <ReactLogo style={{ width: '200px', height: 'auto', marginLeft: '30px'}}/>
+            <ReactLogo style={{color: '#5558FA', width: '200px', height: 'auto', marginLeft: '30px'}}/>
 
             <div className="main-page-container">
                 {data && <div className='graph'>
@@ -105,7 +105,7 @@ export function MainPage() {
                             {key: 'LEVEL0', cat: 'Уровень 0'},
                             {key: 'LEVEL1', cat: 'Уровень 1'},
                             {key: 'LEVEL2', cat: 'Уровень 2'},
-                        ]} handleChange={handleChangeLevel} title='Предсказание для' state={[{key: 'LEVEL0', cat: 'Уровень 1'}]}/>
+                        ]} handleChange={handleChangeLevel} title='Предсказание для' state={[{key: 'LEVEL0', cat: 'Уровень 0'}]}/>
                     </div>
                     <div className="input-div">
                         <Checkbox title='Использовать для прогноза StoragePool' type='checkbox'
