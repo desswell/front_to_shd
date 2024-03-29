@@ -109,15 +109,15 @@ export function MainPage() {
                     </div>
                     <div className="input-div">
                         <Checkbox title='Использовать для прогноза StoragePool' type='checkbox'
-                                  value={storagePool} onChange={(event) => setStoragePool(event.target.value)}/>
+                                  value={storagePool} onChange={setStoragePool(!storagePool)}/>
                     </div>
                     {window==='auto_interval' && <div className="input-div">
                         <Checkbox title='find_global' type='checkbox'
-                                  value={global} onChange={(event) => setGlobal(event.target.value)}/>
+                                  value={global} onChange={setGlobal(!global)}/>
                     </div>}
                     <div className="input-div">
                         <Checkbox title='Облако точек' type='checkbox'
-                                  value={cloud} onChange={(event) => setCloud(event.target.value)}/>
+                                  value={cloud} onChange={setCloud(!cloud)}/>
                     </div>
                     <div className="input-div">
                         {!loader && <Button children='Визуализировать' onClick={handleClick}/>}
