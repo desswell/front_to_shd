@@ -8,12 +8,15 @@ import Button from "../components/Button";
 import axios from 'axios';
 import {DotLoader} from "react-spinners";
 import {ReactComponent as ReactLogo} from '../svgs/BAUM_AI_P-05.svg'
+import Error from "../components/error";
+import TextArea from "../components/textArea";
 
 
 export function MainPage() {
     const [loader, setLoader] = useState(false)
     const [sigh, setSigh] = useState('time')
     const [param, setParam] = useState([{key: 'System', cat: 'Array'}])
+    const [isParam, setIsParam] = useState(false)
     const [sighParam, setSighParam] = useState('Capacity usage(%)')
     const [window, setWindow] = useState('auto_interval')
     const [level, setLevel] = useState([{key: 'LEVEL0', cat: 'Уровень 0'}])
@@ -23,8 +26,20 @@ export function MainPage() {
     const [interval, setInterval] = useState('Месяц')
     const [intervalNum, setIntervalNum] = useState(1)
     const [data, setData] = useState()
+    const [error, setError] = useState(false)
+    const [sqlRequest, setSqlRequest] = useState('select * from shd_from_csv')
+    const [isSqlRequest, setIsSqlRequest] = useState(false)
+    const [isSqlRequestLevel, setIsSqlRequestLevel] = useState(false)
+    const [sqlRequestLevel, setSqlRequestLevel] = useState('UPDATE level ' +
+        'SET "LEVEL0" = 50 ' +
+        'WHERE object = \'Array3\';')
     const handleChangeParam = (selected) => {
         setParam(selected);
+        const isHas = param.some(item => item.key === 'System')
+        setIsParam(!isHas)
+        if (!isHas){
+            setStoragePool(false)
+        }
     };
     const handleChangeLevel = (selected) => {
         setLevel(selected);
@@ -39,9 +54,19 @@ export function MainPage() {
         setGlobal(prevState => !prevState); // Передаем функцию в setState, которая получает предыдущее состояние и возвращает новое
     };
 
+    const handleChangeViewTextArea = (e) => {
+        setIsSqlRequest(prevState => !prevState)
+    }
+    const handleChangeViewTextArea2 = (e) => {
+        setIsSqlRequestLevel(prevState => !prevState)
+    }
+
     const handleClick = async () => {
         setLoader(true)
         await axios.post('http://localhost:8001/api/get_graph', {
+            sqlRequest: sqlRequest,
+            sqlRequestLevel: sqlRequestLevel,
+            isSqlRequestLevel: isSqlRequestLevel,
             param: param,
             sigh: sigh,
             target: sighParam,
@@ -59,10 +84,13 @@ export function MainPage() {
             plot.layout.xaxis.type = 'date'
             setData(plot)
             setLoader(false)
-        }).catch((error) => console.log(error))
+            setError(false)
+        }).catch((error) => {
+            console.log(error)
+            setError(error.response.data.detail)
+            setData({data: '', layout: ''})
+        })
     }
-    console.log("data.layout", data?.layout)
-    console.log("data.layout.typeof", typeof data?.layout)
     return(
         <div>
             <ReactLogo style={{color: '#5558FA', width: '200px', height: 'auto', marginLeft: '30px'}}/>
@@ -83,7 +111,24 @@ export function MainPage() {
                         ]} handleChange={handleChangeParam} title='Параметры' state={[{key: 'System', cat: 'Array'}]}/>
                     </div>
                     <div className="input-div">
-                        <StyledInput children='Признаки' value={sigh} onChange={(event) => setSigh(event.target.value)}/>
+                        <Checkbox title='Показывать SQL запрос для БД' type='checkbox'
+                                  value={isSqlRequest} onChange={handleChangeViewTextArea}/>
+                    </div>
+                    {isSqlRequest && <div className="input-div">
+                        <TextArea children='SQL запрос для БД' value={sqlRequest}
+                                  onChange={(event) => setSqlRequest(event.target.value)}/>
+                    </div>}
+                    <div className="input-div">
+                        <Checkbox title='SQL запрос для Level' type='checkbox'
+                                  value={isSqlRequestLevel} onChange={handleChangeViewTextArea2}/>
+                    </div>
+                    {isSqlRequestLevel && <div className="input-div">
+                        <TextArea children='SQL запрос для уровней' value={sqlRequestLevel}
+                                  onChange={(event) => setSqlRequestLevel(event.target.value)}/>
+                    </div>}
+                    <div className="input-div">
+                        <StyledInput children='Признаки' value={sigh}
+                                     onChange={(event) => setSigh(event.target.value)}/>
                     </div>
                     <div className="input-div">
                         <StyledInput children='Целевые признаки' value={sighParam}
@@ -93,9 +138,10 @@ export function MainPage() {
                         <Select children={[
                             {value: 'auto_interval', label: '1. Автоматический'},
                             {value: 'advanced_interval', label: '2. Ручной (продвинутый)'},
-                        ]} title='Режим выбора окна' value={window} onChange={(event) => setWindow(event.target.value)}/>
+                        ]} title='Режим выбора окна' value={window}
+                                onChange={(event) => setWindow(event.target.value)}/>
                     </div>
-                    {window==='advanced_interval' && <div>
+                    {window === 'advanced_interval' && <div>
                         <div className="input-div">
                             <Select children={[
                                 {value: 'День', label: 'День'},
@@ -105,7 +151,8 @@ export function MainPage() {
                             ]} title='Интервал' value={interval} onChange={(event) => setInterval(event.target.value)}/>
                         </div>
                         <div className="input-div">
-                            <StyledInput children='Количество интервалов' value={intervalNum} onChange={(event) => setIntervalNum(event.target.value)}/>
+                            <StyledInput children='Количество интервалов' value={intervalNum}
+                                         onChange={(event) => setIntervalNum(event.target.value)}/>
                         </div>
                     </div>
                     }
@@ -114,13 +161,14 @@ export function MainPage() {
                             {key: 'LEVEL0', cat: 'Уровень 0'},
                             {key: 'LEVEL1', cat: 'Уровень 1'},
                             {key: 'LEVEL2', cat: 'Уровень 2'},
-                        ]} handleChange={handleChangeLevel} title='Предсказание для' state={[{key: 'LEVEL0', cat: 'Уровень 0'}]}/>
+                        ]} handleChange={handleChangeLevel} title='Предсказание для'
+                                     state={[{key: 'LEVEL0', cat: 'Уровень 0'}]}/>
                     </div>
-                    <div className="input-div">
+                    {!isParam && <div className="input-div">
                         <Checkbox title='Использовать для прогноза StoragePool' type='checkbox'
                                   value={storagePool} onChange={handleChangeStoragePool}/>
-                    </div>
-                    {window==='auto_interval' && <div className="input-div">
+                    </div>}
+                    {window === 'auto_interval' && <div className="input-div">
                         <Checkbox title='find_global' type='checkbox'
                                   value={global} onChange={handleChangeGlobal}/>
                     </div>}
@@ -129,8 +177,10 @@ export function MainPage() {
                                   value={cloud} onChange={handleChangeCloud}/>
                     </div>
                     <div className="input-div">
-                        {!loader && <Button children='Визуализировать' onClick={handleClick}/>}
-                        {loader && <DotLoader color='#5558FA'/>}
+                        {error && <Error style={{marginLeft: '0'}}>{error}</Error>}
+                        {error && <Button children='Визуализировать' onClick={handleClick}/>}
+                        {!loader && !error && <Button children='Визуализировать' onClick={handleClick}/>}
+                        {loader && !error && <DotLoader color='#5558FA'/>}
                     </div>
                 </div>
             </div>
